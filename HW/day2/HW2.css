@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.menu {
+    background-color: #000;
+    height: 100px;
+}
+
+.menu ul {
+    position: absolute;
+    top: 90%;
+    list-style: none;
+}
+
+.menu li {
+    display: inline;
+}
+
+.top {
+    background-color: grey;
+    height: 300px;
+
+}
+
+.mid {
+    background-color: #fff;
+    height: 500px;
+
+}
+
+.footer {
+    background-color: green;
+    height: 100px;
+    color: white
+}
