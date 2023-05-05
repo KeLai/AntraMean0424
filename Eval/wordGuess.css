@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.newGameBtn {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.newGameBtn:hover {
+    background-color: #0056B3;
+}
