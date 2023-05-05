@@ -9,24 +9,16 @@ class View {
         this.newGameBtn = document.querySelector(".newGameBtn");
     }
 
-    changeCount() {
-        this.guessCount.innerText = +(this.guessCount.innerText) + 1;
+    changeCount(count) {
+        this.guessCount.innerText = count;
     }
 
     resetCount() {
         this.guessCount.innerText = 0;
     }
 
-    displayWord(hiddenIndexes, word) {
-        let newDisplay = "";
-        for (let index in word) {
-            if (hiddenIndexes.indexOf(+index) == -1) {
-                newDisplay += word[index] + " ";
-            } else {
-                newDisplay += " _ ";
-            }
-        }
-        this.wordDisplay.innerText = newDisplay;
+    displayWord(word) {
+        this.wordDisplay.innerText = word;
     }
 }
 // const view = new View();
@@ -43,6 +35,7 @@ class Model {
         this.currentWord = "";
         this.displayWord = "";
         this.hiddenIndexes = [];
+        this.hiddenChars = [];
         this.count = 0;
     }
 
@@ -51,6 +44,7 @@ class Model {
         const [word] = data;
         this.currentWord = word;
         this.getRandomHiddenIndex();
+        this.generateDisplayedWord();
     }
 
     getRandomHiddenIndex() {
@@ -65,11 +59,52 @@ class Model {
             let index = Math.floor(Math.random() * wordLen);
             uniqueSet.add(index);
         }
-
         this.hiddenIndexes = Array.from(uniqueSet);
     }
-}
 
+    generateDisplayedWord() {
+        let newDisplay = "";
+        for (let index in this.currentWord) {
+            if (this.hiddenIndexes.indexOf(+index) == -1) {
+                newDisplay += this.currentWord[index] + " ";
+            } else {
+                this.hiddenChars.push(this.currentWord[index]);
+                newDisplay += " _ ";
+            }
+        }
+        this.displayWord = newDisplay;
+    }
+
+    updateDisplayedWord(char) {
+        //记录需要更新显示的char的位置
+        const indexArr = [];
+
+        //hiddenChar元素的索引号，对应hiddenIndexes元素的索引号,['a','b']=>[3,2]
+        //在hiddenChar里找到所有对应的char，记录索引号，然后到hiddenIndexes里拿取原单词数组的index
+        const tmpArr = this.hiddenChars.reduce((acc, value, index) => {
+            if (value === char) {
+                acc.push(index);
+            }
+            return acc;
+        }, []);
+        //更新hiddenChars
+        this.hiddenChars.filter((value) => {
+            if (value !== char) {
+                return true;
+            }
+        })
+        //从hiddenIndexes里拿原word的index，更新hiddenIndexes
+        for (let i of tmpArr) {
+            indexArr.push(this.hiddenIndexes[i]);
+            this.hiddenIndexes.splice(i, 1);
+
+        }
+        //更新displayWord
+        for (let i of indexArr) {
+            this.displayWord.split("")[i] = char;
+        }
+    }
+}
 //controller
 //1. handle game init()
 //2. handle user input
@@ -78,12 +113,33 @@ class Controller {
         this.model = model;
         this.view = view;
         this.init();
+        this.view.newGameBtn.addEventListener("click", () => {
+            //reset game
+            this.init();
+        });
+        this.view.input.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                //guess
+                const char = this.view.input.value;
+                const hiddenChars = this.model.hiddenChars;
+                if (hiddenChars.includes("char")) {
+                    this.model.updateDisplayedWord();
+                } else {
+                    this.model.count++;
+                    this.view.changeCount(this.model.count)
+                }
+            }
+        });
     }
 
     async init() {
         this.view.resetCount();
         await this.model.getRandomWord();
-        this.view.displayWord(this.model.hiddenIndexes, this.model.currentWord);
+        this.view.displayWord(this.model.displayWord);
+    }
+
+    checkInputGuess() {
+
     }
 }
 
