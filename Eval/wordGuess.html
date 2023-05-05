@@ -8,13 +8,22 @@
     <script defer src="wordGuess.js"></script>
     <link rel="stylesheet" href="wordGuess.css">
     <title>Word Guessing Game</title>
+    <!-- <script>
+        const api = (() => {
+            const res = fetch("https://random-word-api.herokuapp.com/word")
+                .then(data => data.json())
+                .catch(error => console.log(data));
+            return api; //promise
+        })();
+        console.log(api);
+    </script> -->
 </head>
 
 <body>
     <div class="container">
         <h1 class="title">Word Guessing Game</h1>
-        <p class="guessCount">0 / 10</p>
-        <p class="wordDisplay">_ _ _ _</p>
+        <p><span class="guessCount"></span> / 10</p>
+        <p class="wordDisplay"></p>
         <input type="text" class="input" maxlength="1">
         <button class="newGameBtn">New Game</button>
     </div>
