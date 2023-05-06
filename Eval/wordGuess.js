@@ -13,10 +13,6 @@ class View {
         this.guessCount.innerText = count;
     }
 
-    resetCount() {
-        this.guessCount.innerText = 0;
-    }
-
     displayWord(word) {
         this.wordDisplay.innerText = word;
     }
@@ -33,18 +29,26 @@ class View {
 class Model {
     constructor() {
         this.currentWord = "";
+        this.currentWordArr; //2Darray, [hiddenStatus][char]; hiddenStatus:true/false
         this.displayWord = "";
         this.hiddenIndexes = [];
-        this.hiddenChars = [];
+
         this.count = 0;
+        this.updateTimes = 0;
     }
+    //he__o l, hello 
+    //found = arr.index(); [hidden status][char]
+
+    //while (found){found=arr.index([1,char]) update it to [display][char]}
 
     async getRandomWord() { // async always return promise object
-        const data = await fetch("https://random-word-api.herokuapp.com/word").then(data => data.json()).catch(err => console.log("data error"));
-        const [word] = data;
-        this.currentWord = word;
-        this.getRandomHiddenIndex();
-        this.generateDisplayedWord();
+        // const data = await fetch("https://random-word-api.herokuapp.com/word").then(data => data.json()).catch(err => console.log("data error"));
+        // const [word] = data;
+        // this.currentWord = word;     //update currentWord
+        this.currentWord = "helloworld";
+        this.getRandomHiddenIndex();    //update hiddenIndexes
+        this.generateCurrentWordArr();  //update currentWordArr
+        this.generateDisplayedWord();   //update displayWord
     }
 
     getRandomHiddenIndex() {
@@ -52,7 +56,7 @@ class Model {
         if (wordLen == 0) {
             throw new Error("empty word string");
         }
-        const randomCount = Math.floor(Math.random() * wordLen + 1); //random number of hidden words, 1 <= count < wordLength
+        const randomCount = Math.floor(Math.random() * (wordLen - 1) + 1); //random number of hidden words, 1 <= count <= wordLength - 1
         const uniqueSet = new Set(); // for pick up unique index;
         // const randomHiddenIndexes = [];
         while (uniqueSet.size < randomCount) { //randomlize hidden index
@@ -62,47 +66,35 @@ class Model {
         this.hiddenIndexes = Array.from(uniqueSet);
     }
 
-    generateDisplayedWord() {
+    generateDisplayedWord() { //according to currentWordArr
         let newDisplay = "";
-        for (let index in this.currentWord) {
-            if (this.hiddenIndexes.indexOf(+index) == -1) {
-                newDisplay += this.currentWord[index] + " ";
+        this.currentWordArr.forEach((value) => {
+            if (value[0] === true) {
+                newDisplay += "_"
             } else {
-                this.hiddenChars.push(this.currentWord[index]);
-                newDisplay += " _ ";
+                newDisplay += value[1];
             }
-        }
+        })
         this.displayWord = newDisplay;
     }
 
-    updateDisplayedWord(char) {
-        //记录需要更新显示的char的位置
-        const indexArr = [];
+    updateCurrentWordArr(index) {
+        this.currentWordArr[index][0] = false;
+    }
 
-        //hiddenChar元素的索引号，对应hiddenIndexes元素的索引号,['a','b']=>[3,2]
-        //在hiddenChar里找到所有对应的char，记录索引号，然后到hiddenIndexes里拿取原单词数组的index
-        const tmpArr = this.hiddenChars.reduce((acc, value, index) => {
-            if (value === char) {
-                acc.push(index);
-            }
-            return acc;
-        }, []);
-        //更新hiddenChars
-        this.hiddenChars.filter((value) => {
-            if (value !== char) {
-                return true;
+    generateCurrentWordArr() {
+        this.currentWordArr = this.currentWord.split("").map((value, index) => {
+            if (this.hiddenIndexes.includes(index)) {
+                return [true, ...value];
+            } else {
+                return [false, ...value];
             }
         })
-        //从hiddenIndexes里拿原word的index，更新hiddenIndexes
-        for (let i of tmpArr) {
-            indexArr.push(this.hiddenIndexes[i]);
-            this.hiddenIndexes.splice(i, 1);
+    }
 
-        }
-        //更新displayWord
-        for (let i of indexArr) {
-            this.displayWord.split("")[i] = char;
-        }
+    reset() {
+        this.count = 0;
+        this.updateTimes = 0;
     }
 }
 //controller
@@ -121,25 +113,56 @@ class Controller {
             if (event.key === "Enter") {
                 //guess
                 const char = this.view.input.value;
-                const hiddenChars = this.model.hiddenChars;
-                if (hiddenChars.includes("char")) {
-                    this.model.updateDisplayedWord();
-                } else {
-                    this.model.count++;
-                    this.view.changeCount(this.model.count)
+                this.inputGuessing(char);
+
+                //empty inputbox
+                this.view.input.value = "";
+
+                //gameover check
+                if (this.model.count >= 10) {
+                    setTimeout(() => {
+                        alert("Game over!");
+                        this.init();
+                    }, 0)
+                }
+                if (this.model.updateTimes === this.model.hiddenIndexes.length) {
+                    setTimeout(() => {
+                        alert("Congradulations!");
+                        this.init();
+                    }, 0)
+
                 }
             }
         });
     }
 
     async init() {
-        this.view.resetCount();
+        this.view.changeCount('0');
+        this.model.reset();
         await this.model.getRandomWord();
         this.view.displayWord(this.model.displayWord);
     }
 
-    checkInputGuess() {
-
+    inputGuessing(char) {
+        let isFound = 0
+        let checkTimes = 0
+        while (isFound >= 0) {
+            checkTimes++;
+            isFound = this.model.currentWordArr.findIndex((data) => {
+                return (data[0] === true && data[1] === char)
+            })
+            if (isFound < 0) {
+                if (checkTimes == 1) {
+                    this.model.count++;
+                    this.view.changeCount(this.model.count);
+                }
+                break;
+            }
+            this.model.updateCurrentWordArr(isFound);
+            this.model.updateTimes++;
+        }
+        this.model.generateDisplayedWord();
+        this.view.displayWord(this.model.displayWord);
     }
 }
 
