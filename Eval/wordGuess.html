@@ -4,25 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="wordGuess.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+    <script defer src="wordGuesses.js"></script>
     <link rel="stylesheet" href="wordGuess.css">
     <title>Word Guessing Game</title>
 </head>
 
 <body>
     <div class="container">
-        <div class="aside timerWrapper">
-            <p>Time remaining: <span class="timer"></span> seconds</p>
+        <div class="timerWrapper">
+            <p>Time remaining:</p>
+            <div class="timer"></div>
         </div>
         <div class="gameArea">
-            <h1 class="title">Word Guessing Game</h1>
-            <p><span class="guessCount"></span> / 10 </p>
-            <p class="wordDisplay"></p>
-            <input type="text" class="input" maxlength="1">
-            <button class="newGameBtn">New Game</button>
+            <div class="gameAreaBox">
+                <div class="gameAreaBoxTop">
+                    <h1 class="title">Word Guessing Game</h1>
+                    <p><span class="guessCount"></span> / 10 </p>
+                </div>
+
+                <div class="gameAreaBoxBot">
+                    <p class="wordDisplay"></p>
+                    <input type="text" class="input" maxlength="1">
+                    <button class="newGameBtn">New Game</button>
+                </div>
+            </div>
         </div>
-        <div class="aside guessHistory">
+        <div class="guessHistory">
             <h3>Guessed letters:</h3>
         </div>
     </div>
