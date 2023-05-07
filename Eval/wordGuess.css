@@ -49,6 +49,11 @@ body {
     text-align: center;
     width: 100%;
     word-wrap: break-word;
+    color: #1D267D;
+}
+
+.guessText {
+    font-size: 1.2rem;
 }
 
 
@@ -62,18 +67,19 @@ body {
 
 .gameAreaBoxBot>.input {
     margin-bottom: 20px;
-    width: 100%;
+    width: 200px;
 }
 
 .input:focus {
     outline: none;
     border: 2px solid #e087a9;
     border-radius: 3px;
+    box-shadow: 0 0 3px #e087a9;
 }
 
-.gameAreaBoxBot>.wordDisplay {
+.wordDisplay {
     letter-spacing: 10px;
-    font-size: 20px;
+    font-size: 1.5rem;
     font-weight: bold;
     margin-top: 10px;
 }
@@ -85,7 +91,7 @@ body {
     padding: 10px 10px;
     cursor: pointer;
     border-radius: 5px;
-    width: 80%;
+    width: 200px;
 }
 
 .gameAreaBoxBot>.newGameBtn:hover {
@@ -106,9 +112,10 @@ body {
 }
 
 .timer {
-    font-size: 48px;
+    font-size: 60px;
     font-weight: bold;
     text-align: center;
+    color: #1D267D;
 }
 
 .guessHistory {
@@ -116,6 +123,8 @@ body {
     flex-direction: column;
     align-items: center;
     width: 20%;
+    max-height: 80%;
+    overflow-y: auto;
     background-color: #f8f9fa;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -137,6 +146,7 @@ body {
     font-weight: bold;
     font-size: 1.5em;
     margin: 7px 0;
+    color: #1D267D;
 }
 
 .correctGuess {
@@ -151,6 +161,30 @@ body {
     .container {
         flex-direction: column;
         width: 90%;
-        height: auto;
+        height: 100%;
+        min-height: 100vh;
+        align-items: flex-start;
+    }
+
+    .timerWrapper {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0;
+        width: 100%;
+        height: 20%;
+    }
+
+    .gameArea {
+        height: 60%;
+    }
+
+    .guessHistory {
+        width: 100%;
+        height: 20%;
+        /* margin-top: 20px; */
+    }
+
+    .guessHistory>.guessHistoryCaption {
+        font-size: 1.2rem;
     }
 }
