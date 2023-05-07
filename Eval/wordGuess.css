@@ -14,18 +14,143 @@ body {
 
 .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 80%;
+    height: 80%;
+}
+
+.gameArea {
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
-.newGameBtn {
+.gameAreaBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.gameAreaBoxTop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.gameAreaBoxTop>.title {
+    font-size: 2rem;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+
+.gameAreaBoxBot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    /* margin-top: -25%; */
+}
+
+.gameAreaBoxBot>.input {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.input:focus {
+    outline: none;
+    border: 2px solid #e087a9;
+    border-radius: 3px;
+}
+
+.gameAreaBoxBot>.wordDisplay {
+    letter-spacing: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.gameAreaBoxBot>.newGameBtn {
     background-color: #007BFF;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 10px;
     cursor: pointer;
+    border-radius: 5px;
+    width: 80%;
 }
 
-.newGameBtn:hover {
+.gameAreaBoxBot>.newGameBtn:hover {
     background-color: #0056B3;
+}
+
+
+.timerWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -2%;
+}
+
+.timerWrapper p {
+    margin-bottom: 10px;
+}
+
+.timer {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.guessHistory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+    background-color: #f8f9fa;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.guessHistory>h3 {
+    margin: 8px 0;
+    white-space: nowrap;
+}
+
+.guessHistory>p {
+    text-align: center;
+    width: 100%;
+    margin: 5px 0;
+    word-wrap: break-word;
+}
+
+.guessHistory>.guessHistoryCaption {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin: 7px 0;
+}
+
+.correctGuess {
+    color: green;
+}
+
+.wrongGuess {
+    color: red;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+    }
 }
