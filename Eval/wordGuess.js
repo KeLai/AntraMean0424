@@ -22,12 +22,12 @@ class View {
     }
 
     displayGuessHistory(guessHistory) {
-        let text = "";
+        let text = `<p class="guessHistoryCaption">Guess History</p>`;
         guessHistory.forEach((value) => {
             if (value[0] === true) {
-                text += `<p>Correct Guess: <span class="correctGuess">${value[1]}</span></p>`;
+                text += `<p>Correct: <span class="correctGuess">${value[1]}</span></p>`;
             } else {
-                text += `<p>Incorrect Guess: <span class="wrongGuess">${value[1]}</span></p>`
+                text += `<p>Incorrect: <span class="wrongGuess">${value[1]}</span></p>`
             }
         })
         this.guessHistory.innerHTML = text;
@@ -194,7 +194,7 @@ class Controller {
         this.model.updateView();
 
         if (mode === 0) {
-            this.view.startTimer(10, this.gameOver.bind(this));
+            this.view.startTimer(60, this.gameOver.bind(this));
         }
     }
 
