@@ -147,6 +147,7 @@ class Controller {
     constructor(model, view) {
         this.model = model;
         this.view = view;
+        //start game
         this.init(0);
         //new game button
         this.view.newGameBtn.addEventListener("click", () => {
@@ -158,7 +159,9 @@ class Controller {
         this.view.input.addEventListener("keypress", (event) => {
             if (event.key === "Enter") {
                 //guess
-                const char = this.view.input.value;
+                const char = this.view.input.value.toLowerCase();
+
+                //input guessing
                 this.inputGuessing(char);
 
                 //empty inputbox
@@ -200,6 +203,13 @@ class Controller {
 
 
     inputGuessing(char) {
+        //check if it is a char
+        if (!(/^[a-z]$/).test(char)) {
+            alert("Oops! Please type in a character!");
+            return;
+        }
+
+        //if already guessed
         const isDupilicate = this.model.guessHistory.some(value => value[1] === char);
         if (isDupilicate) {
             alert("Oops! You have already guessed this character.");
