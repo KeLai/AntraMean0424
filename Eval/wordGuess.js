@@ -254,3 +254,4 @@ class Controller {
 const view = new View();
 const model = new Model(view);
 const controller = new Controller(model, view);
+
