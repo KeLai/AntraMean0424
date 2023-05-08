@@ -126,6 +126,7 @@ class Model {
         this.updateTimes = 0;
         this.displayWord = "";
         this.guessHistory = [];
+        this.successGuessedWordsCount = 0;
     }
 
     resetForNewWord() {
